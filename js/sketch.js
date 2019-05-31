@@ -59,3 +59,52 @@ function draw() {
         }
     }
 }
+//Slide function
+function slide(row) {
+    let arr = row.filter(val => val);
+    let missing = 4 - arr.length;
+    let zeros = Array(missing).fill(0);
+    arr = zeros.concat(arr);
+    return arr;
+}
+//Copy
+function copyGrid(grid) {
+    let extra = blankGrid();
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            extra[i][j] = grid[i][j];
+        }
+    }
+    return extra;
+}
+//Compare
+function compare(a, b) {
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            if (a[i][j] !== b[i][j]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+//Combine function
+function combine(row) {
+    for (let i = 3; i >= 1; i--) {
+        let a = row[i];
+        let b = row[i - 1];
+        if (a == b) {
+            row[i] = a + b;
+            row[i - 1] = 0;
+        }
+    }
+    return row;
+}
+//Operate 
+function operate(row) {
+    row = slide(row);
+    row = combine(row);
+    row = slide(row);
+    return row;
+}
