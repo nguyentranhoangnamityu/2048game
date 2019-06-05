@@ -1,5 +1,7 @@
 let grid;
-
+let state = false;
+let undoArray = [];
+let score = 0;
 //BlankGrid
 function blankGrid() {
     return [
@@ -9,16 +11,18 @@ function blankGrid() {
         [0, 0, 0, 0]
     ];
 }
-
 //Create 4 arrays
 function setup() {
-    createCanvas(400, 400);
+    const content = createCanvas(400, 400);
+    content.parent('content');
     grid = blankGrid();
     //Add number into table 
     addNumber(); //one number
     addNumber(); //two number
-    console.table(grid);
+    updateGUI();
+    pushToList();
 }
+
 //Add random number 2 or 4 into table
 function addNumber() {
     let options = [];
@@ -39,21 +43,54 @@ function addNumber() {
     let r = random(1);
     grid[spot.x][spot.y] = r > 0.5 ? 2 : 4;
 }
+function pushToList() {
+    if (undoArray.length > 0 && state === true) {
+        state = false;
+        undoArray = [[copyGrid(grid), score]];
+    }
+    undoArray.push([copyGrid(grid), score]);
+}
+function Undo() {
+    if (state === false) {
+        state = true;
+        undoArray.pop();
+    }
+    if (undoArray.length == 0) {
+        return;
+    }
+    [grid, score] = undoArray.pop();
+    updateGUI();
+}
+function updateGUI() {
+    background(255);
+    draw();
+    document.getElementById('score').innerHTML = score;
+}
 //Draw it
 function draw() {
-    background(187,173,161); 
+    background(220); 
     let w = 100;
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
-            noFill();
-            strokeWeight(5);
-            stroke(50);
-            rect(i * w, j * w, w, w); // Draw a rectangle at location (i*w, j*w) with a width and height of w.
+            // noFill();
+            strokeWeight(15);
+            stroke('#bbada0');
+            
             let value = grid[i][j];
+            let s = value.toString();
+            if (value != 0) {
+                // stroke(0);
+                fill(colors[s].color);
+            } else {
+                // noFill();
+                fill(colors[0].color);
+            }
+            rect(i * w, j * w, w, w); // Draw a rectangle at location (i*w, j*w) with a width and height of w.
             if (grid[i][j] !== 0) {
                 textAlign(CENTER, CENTER);
-                textSize(64);
+                noStroke();
                 fill(0);
+                textSize(colors[s].size);
                 text(value, i * w + w / 2, j * w + w / 2); //center of textbox
             }
         }
@@ -88,6 +125,59 @@ function compare(a, b) {
     }
     return false;
 }
+function flipGrid(grid) {
+    for (let i = 0; i < 4; i++) {
+        grid[i].reverse();
+    }
+    return grid;
+}
+function rotateGrid(grid) {
+    let newGrid = blankGrid();
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+            newGrid[i][j] = grid[j][i];
+        }
+    }
+    return newGrid;
+}
+//One move
+function keyPressed() {
+    let flipped = false;
+    let rotated = false;
+    if (keyCode === DOWN_ARROW) {
+        //DO NOTHING
+    } else if (keyCode === UP_ARROW) {
+        grid = flipGrid(grid);
+        flipped = true;
+    } else if (keyCode === RIGHT_ARROW) {
+        grid = rotateGrid(grid);
+        rotated = true;
+    } else if (keyCode === LEFT_ARROW) {
+        grid = rotateGrid(grid);
+        grid = flipGrid(grid); 
+        rotated = true;
+        flipped = true;
+    }
+    let past = copyGrid(grid);
+    for (let i = 0; i < 4; i++) {
+        grid[i] = operate(grid[i]);
+    }
+    let changed = compare(past, grid);
+    if (flipped) {
+        grid = flipGrid(grid);
+    }
+    if (rotated) {
+        grid = rotateGrid(grid);
+        // grid = rotateGrid(grid);
+        // grid = rotateGrid(grid);
+    }
+    if (changed) {
+        addNumber();
+        pushToList();
+    }
+    updateGUI();
+
+}
 
 //Combine function
 function combine(row) {
@@ -96,6 +186,7 @@ function combine(row) {
         let b = row[i - 1];
         if (a == b) {
             row[i] = a + b;
+            score += row[i];
             row[i - 1] = 0;
         }
     }

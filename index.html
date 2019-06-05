@@ -8,9 +8,21 @@
     
 </head>
 <body>
-    <div class="main">
-        <script src="js/sketch.js"></script>  
+    <h1 class="title">2048</h1>
+    <div class="scoreContent">
+        <span>Score: </span>
+        <span id="score"></span>
     </div>
+    <div class="btnContainer">
+        <button align=center; onclick="Undo()" class="btn">Undo</button>
+    </div>
+    <div class="container">
+        <div id="content">
+        </div>
+    </div>
+    
     <script src="./p5/p5/p5.min.js"></script>
+    <script src="js/sketch.js"></script>
+    <script src="js/const.js"></script>
 </body>
 </html>
