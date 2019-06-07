@@ -48,7 +48,7 @@ function pushToList() {
         state = false;
         undoArray = [[copyGrid(grid), score]];
     }
-    undoArray.push([copyGrid(grid), score]);
+        undoArray.push([copyGrid(grid), score]);
 }
 function Undo() {
     if (state === false) {
@@ -68,14 +68,14 @@ function updateGUI() {
 }
 //Draw it
 function draw() {
-    background(220); 
+    background(220);
     let w = 100;
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
             // noFill();
             strokeWeight(15);
             stroke('#bbada0');
-            
+
             let value = grid[i][j];
             let s = value.toString();
             if (value != 0) {
@@ -154,7 +154,7 @@ function keyPressed() {
         rotated = true;
     } else if (keyCode === LEFT_ARROW) {
         grid = rotateGrid(grid);
-        grid = flipGrid(grid); 
+        grid = flipGrid(grid);
         rotated = true;
         flipped = true;
     }
@@ -177,6 +177,17 @@ function keyPressed() {
     }
     updateGUI();
 
+    let win = isGameWon();
+    if (win) {
+        alert("You win!");
+
+    }
+    let lose = isGameOver();
+    if (lose) {
+        alert("You lose!");
+        console.log("lsoe")
+    }
+
 }
 
 //Combine function
@@ -198,4 +209,11 @@ function operate(row) {
     row = combine(row);
     row = slide(row);
     return row;
+}
+//New game
+function newGame() {
+    undoArray = [];
+    score = 0;
+    setup();
+
 }
