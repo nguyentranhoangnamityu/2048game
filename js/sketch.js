@@ -176,16 +176,35 @@ function keyPressed() {
         pushToList();
     }
     updateGUI();
-
+    
     let win = isGameWon();
     if (win) {
-        alert("You win!");
-
+        Swal.fire({
+            title: 'Sweet!',
+            text: 'YOU DID IT!.',
+            imageUrl: 'https://sweetalert2.github.io/images/nyan-cat.gif',
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+            animation: false
+          })
+       newGame();
     }
     let lose = isGameOver();
     if (lose) {
-        alert("You lose!");
-        console.log("lsoe")
+        Swal.fire({
+            title: 'Game Over :(((((((',
+            width: 600,
+            padding: '3em',
+            background: '#fff url(https://sweetalert2.github.io/images/trees.png)',
+            backdrop: `
+              rgba(0,0,123,0.4)
+              url("https://sweetalert2.github.io/images/nyan-cat.gif")
+              center left
+              no-repeat
+            `
+          })
+          newGame();
     }
 
 }
