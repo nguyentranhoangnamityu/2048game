@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2048</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <div class="memberContainer">
+        <!-- <span class="design"><h2>Design by: </h2></span> -->
+        <span class="member">Minh Thong </span>
+        <img src="./thongml.JPG" alt="">
+        <span class="member">Hoang Nam</span>
+        <img src="./namdeptrai.JPG" alt="">
+    </div>
+
+    <h1 class="title">2048</h1>
+    <div class="scoreContent">
+        <span>Score: </span>
+        <span id="score"></span>
+    </div>
+    <div class="btnContainer">
+        <button align=center; onclick="Undo()" class="btn">Undo</button>
+        <button onclick="newGame()" class="btn">New game</button>
+    </div>
+    <div class="container">
+        <div id="content">
+        </div>
+    </div>
+
+    <script src="./p5/p5/p5.min.js"></script>
+    <script src="js/sketch.js"></script>
+    <script src="js/const.js"></script>
+    <script src="js/gameState.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+</body>
+
+</html>

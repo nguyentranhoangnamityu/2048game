@@ -1,0 +1,19 @@
+body{
+    position: relative;
+}
+.content{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 500px;
+    left: 50%;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+}
+.btn{
+    width: 40%;
+}
+.content{
+    transform: translate(-50%,-50%);
+}
